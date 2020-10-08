@@ -1,0 +1,8 @@
+<launch>
+  
+  <node name="robot_definitions_class"
+        pkg="robot_stack"
+        type="robot_definitions"
+        respawn="false" output="screen">
+  </node>
+</launch>

@@ -1,0 +1,71 @@
+<launch>
+ <!-- By default we do not overwrite the URDF. Change the following to true to change the default behavior -->
+  <!-- <arg name="load_robot_description" default="true"/> -->
+
+  
+  
+  <arg name="hardware_interface" default="PositionJointInterface"/>
+  <arg name="robot_name" default="iiwa7_Blue"/>
+  <arg name="model" default="iiwa7"/>
+
+  <arg name="rviz" default="false"/>
+
+  <!-- By default, we are not in debug mode -->
+  <arg name="debug" default="false" />
+    
+  <!-- The name of the parameter under which the URDF is loaded -->
+  <arg name="robot_description" default="/$(arg robot_name)/robot_description"/>
+
+       <!-- <remap from="robot_description" to="/$(arg robot_name)/robot_description" /> -->
+        <remap from="/move_group/fake_controller_joint_states" to="/$(arg robot_name)/move_group/fake_controller_joint_states" /> 
+        <remap from="/get_planning_scene" to="/$(arg robot_name)/get_planning_scene" />
+        <remap from="/apply_planning_scene" to="/$(arg robot_name)/apply_planning_scene" />
+
+  <!-- <remap from="robot_description" to="/$(arg robot_name)/robot_description" /> -->
+
+  <!-- <remap from="robot_iiwa7_118" to="robot_iiwa7_118" /> -->
+  <!-- Loads the URDF with the given hardware interface and robot name into the ROS Parameter Server -->
+
+
+  <!--Put in a namespace to allow many instances to run-->
+    <group ns="$(arg robot_name)" >
+        
+        <!-- We do not have a robot connected, so publish fake joint states -->
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen">
+            <param name="use_gui" value="false"/> 
+            <rosparam param="source_list">["/move_group/fake_controller_joint_states"]</rosparam>
+        </node>
+        
+        <!-- Given the published joint states, publish tf for the robot links -->
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
+        
+        <!-- Load move_group -->
+        <include file="$(find robot_stack)/iiwa_moveit/launch/move_group.launch">
+            <arg name="publish_monitored_planning_scene" value="true" />
+            <arg name="fake_execution" value="true"/>
+            <arg name="hardware_interface" value="$(arg hardware_interface)"/>
+            <arg name="robot_name" value="$(arg robot_name)"/>
+            <arg name="model" value="$(arg model)" />
+            <!-- <remap from="robot_description" to="/$(arg robot_name)/robot_description" /> -->
+            <!-- <remap from="/move_group/fake_controller_joint_states" to="/$(arg robot_name)/move_group/fake_controller_joint_states" /> 
+            <remap from="/get_planning_scene" to="/$(arg robot_name)/get_planning_scene" />
+            <remap from="/apply_planning_scene" to="/$(arg robot_name)/apply_planning_scene" />
+  -->
+        </include>
+   
+    </group>
+
+
+  <node name="grasp_robot_2"
+        pkg="robot_stack"
+        type="grasp_robot_2"
+        respawn="false" output="screen">
+        <!-- <remap from="robot_description" to="/$(arg robot_name)/robot_description" /> 
+        <remap from="/move_group/fake_controller_joint_states" to="/$(arg robot_name)/move_group/fake_controller_joint_states" /> 
+        <remap from="/get_planning_scene" to="/$(arg robot_name)/get_planning_scene" />  -->
+  
+  </node>
+
+
+
+</launch>

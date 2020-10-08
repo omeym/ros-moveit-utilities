@@ -1,0 +1,11 @@
+<launch>
+
+
+<include file="$(find robot_stack)/launch/iiwa_Green_grasp.launch"> 
+    </include>
+
+<include file="$(find robot_stack)/launch/iiwa_Blue_grasp.launch">
+    </include>         
+
+
+</launch>

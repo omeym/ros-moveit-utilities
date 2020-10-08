@@ -1,0 +1,3 @@
+<launch>
+ <rosparam command="load" file="$(find robot_stack)/iiwa_moveit/config/sensors_iiwa.yaml"/>
+</launch>

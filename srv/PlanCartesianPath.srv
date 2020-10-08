@@ -1,0 +1,6 @@
+geometry_msgs/Pose Start_Point
+geometry_msgs/Pose End_Point
+bool transition_flag
+std_msgs/Int32 point_id
+---
+moveit_msgs/RobotTrajectory cartesian_trajectory

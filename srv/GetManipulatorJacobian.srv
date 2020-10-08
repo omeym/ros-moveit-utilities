@@ -1,0 +1,4 @@
+robot_stack/RobotJointAngles Joint_Angles
+bool service_flag
+---
+std_msgs/Float32MultiArray Manipulator_Jacobian
